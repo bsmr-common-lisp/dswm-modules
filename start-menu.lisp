@@ -35,72 +35,135 @@
 (in-package #:dswm)
 
 
-(defparameter *start-menu*
-  '(
-    ("Graphics"
-     ("Color Picker"   "gcolor2")
-     ("GIMP"           "gimp")
-     ("Inkscape"       "inkscape")
-     ("Picasa"         "picasa")
-     ("Scanner"        "xsane")
-     ("OCR"            "gocr"))
+;; (defparameter *start-menu*
+;;   '(
+;;     ("Graphics"
+;;      ("Color Picker"   "gcolor2")
+;;      ("GIMP"           "gimp")
+;;      ("Inkscape"       "inkscape")
+;;      ("Picasa"         "picasa")
+;;      ("Scanner"        "xsane")
+;;      ("OCR"            "gocr"))
 
-    ("Internet"
-     ("Filezilla" "filezilla")
-     ("Firefox"   "firefox")
-     ("Skype"     "skype"))
+;;     ("Internet"
+;;      ("Filezilla" "filezilla")
+;;      ("Firefox"   "firefox")
+;;      ("Skype"     "skype"))
 
-    ("Office"
-     ("OpenOffice.org"  "openoffice"))
+;;     ("Office"
+;;      ("OpenOffice.org"  "openoffice"))
 
-    ("Sound and Video"
-     ("Europe 1"      "mplayer http://vipicecast.yacast.net/europe1")
-     ("RTL"           "mplayer http://streaming.radio.rtl.fr/rtl-1-44-96")
-     ("Mixer"         "xterm -rv -e alsamixer")
-     ("K3b Burner"    "k3b")
-     ("Eject CD-ROM"  "eject cdrom"))
+;;     ("Sound and Video"
+;;      ("Europe 1"      "mplayer http://vipicecast.yacast.net/europe1")
+;;      ("RTL"           "mplayer http://streaming.radio.rtl.fr/rtl-1-44-96")
+;;      ("Mixer"         "xterm -rv -e alsamixer")
+;;      ("K3b Burner"    "k3b")
+;;      ("Eject CD-ROM"  "eject cdrom"))
 
-    ("System Tools"
-     ("Calculator"        "speedcrunch")
-     ("Disk space"        "filelight")
-     ("File Manager"      "nautilus")  ; thunar
-     ("Nvidia X Server"   "nvidia-settings")
-     ("Power Preferences" "gnome-power-preferences")
-     ("Printers"          "system-config-printer")
-     ("Terminal Server"   "tsclient")
-         ; Turn on "Enable window manager's key bindings" for prefix key to
-         ; be passed seamlessly (when *not* in full screen).
-         ; Toggle between full screen and not full screen using
-         ; `Ctrl-Alt-Enter'.
+;;     ("System Tools"
+;;      ("Calculator"        "speedcrunch")
+;;      ("Disk space"        "filelight")
+;;      ("File Manager"      "nautilus")  ; thunar
+;;      ("Nvidia X Server"   "nvidia-settings")
+;;      ("Power Preferences" "gnome-power-preferences")
+;;      ("Printers"          "system-config-printer")
+;;      ("Terminal Server"   "tsclient")
+;;          ; Turn on "Enable window manager's key bindings" for prefix key to
+;;          ; be passed seamlessly (when *not* in full screen).
+;;          ; Toggle between full screen and not full screen using
+;;          ; `Ctrl-Alt-Enter'.
 
-     ;; > In the case of Rdesktop you have to launch the app with the option
-     ;; > '-K' so Stump can retain control over the key combinations that you
-     ;; > input inside the remote session.
+;;      ;; > In the case of Rdesktop you have to launch the app with the option
+;;      ;; > '-K' so Stump can retain control over the key combinations that you
+;;      ;; > input inside the remote session.
 
-     ("VirtualBox"       "VirtualBox"))
+;;      ("VirtualBox"       "VirtualBox"))
 
-    ("X Windows Tools"
-     ("Clipboard"  "xclipboard")
-     ("Fonts"      "xfontsel")
-     ("Ruler"      "kruler")
-     ("Events"     "xev"))
-    ))
+;;     ("X Windows Tools"
+;;      ("Clipboard"  "xclipboard")
+;;      ("Fonts"      "xfontsel")
+;;      ("Ruler"      "kruler")
+;;      ("Events"     "xev"))
+;;     ))
 
-(defcommand menu () ()
-  "docstring"
-  (labels ((pick (options)
-                 (let ((selection (dswm::select-from-menu
-                                   (current-screen) options "")))
-                   (cond
-                    ((null selection)
-                     (throw 'dswm::error "Abort."))
-                    ((stringp (second selection))
-                     (second selection))
-                    (t
-                     (pick (cdr selection)))))))
-    (let ((choice (pick *start-menu*)))
-      (run-shell-command choice))))
+;; (defcommand menu () ()
+;;   "docstring"
+;;   (labels ((pick (options)
+;;                  (let ((selection (dswm::select-from-menu
+;;                                    (current-screen) options "")))
+;;                    (cond
+;;                     ((null selection)
+;;                      (throw 'dswm::error "Abort."))
+;;                     ((stringp (second selection))
+;;                      (second selection))
+;;                     (t
+;;                      (pick (cdr selection)))))))
+;;     (let ((choice (pick *start-menu*)))
+;;       (run-shell-command choice))))
 
-(define-key *root-map* (kbd ".") "menu")
+;; (define-key *root-map* (kbd ".") "menu")
+
+(defvar *menu-items* nil
+  "list of startmenu items")
+
+(defvar *menu-sections-list* nil
+  "list of startmenu sections")
+
+(defstruct menu-item
+  section
+  name
+  command
+  (comment NIL))
+
+(defstruct menu-section name subsections)
+
+(defcommand startmenu-add-item
+    ((:rest "Enter menu section: ")
+     (:string "Enter item name")
+     (:string "Enter command, which will be executed: "))
+  (section name command)
+  "Add item to startmenu"
+  (when
+      (add-to-list
+       *menu-items*
+       (make-menu-item
+        :section (read-from-string section)
+        :name name
+        :command command))
+    (message "Item added")))
+
+;; FIXME: unstable
+;; (defcommand-alias startmenu-add-item sm-add)
+
+
+
+;;;; Items
+;; Office
+(startmenu-add-item "Office:LibreOffice" "Writer" "lowriter")
+(startmenu-add-item "Office:LibreOffice" "Calc" "localc")
+(startmenu-add-item "Office:LibreOffice" "Impress" "loimpress")
+(startmenu-add-item "Office:LibreOffice" "base" "lobase")
+(startmenu-add-item "Office:OpenOffice" "Writer" "oowriter")
+(startmenu-add-item "Office:OpenOffice" "Calc" "oocalc")
+(startmenu-add-item "Office:OpenOffice" "Impress" "ooimpress")
+(startmenu-add-item "Office:OpenOffice" "Base" "oobase")
+(startmenu-add-item "Office" "StarDict" "stardict")
+(startmenu-add-item "Office" "Dia" "dia")
+
+(startmenu-add-item "Media:Video" "" "")
+(startmenu-add-item "Media:Video" "" "")
+(startmenu-add-item "Media:Video" "" "")
+(startmenu-add-item "Media:Video" "" "")
+(startmenu-add-item "Media:Video" "" "")
+
+(startmenu-add-item "Media:Audio" "" "")
+(startmenu-add-item "Media:Audio" "" "")
+(startmenu-add-item "Media:Audio" "" "")
+(startmenu-add-item "Media:Audio" "" "")
+(startmenu-add-item "Media:Audio" "" "")
+
+(startmenu-add-item "Media:Audio" "" "")
+
+
 
 ;;; start-menu.lisp ends here
