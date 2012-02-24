@@ -1,0 +1,41 @@
+
+
+
+(defstruct dskb-keymap
+  "keymap options"
+  name
+  layout-name
+  variants)
+
+(defstruct dskb-switch
+  name
+  command-string)
+
+(defstruct dskb-led
+  name
+  command-string)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;; Keymap definitions ;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(make-dskb-keymap
+ :name "en"
+ :layout "en"
+ :variants '())
