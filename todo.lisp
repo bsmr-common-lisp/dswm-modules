@@ -33,7 +33,11 @@
 (defpackage :dswm.modules.todo
   (:use :common-lisp :dswm :cl-ppcre))
 
-(in-package :dswm-user)
+(in-package :dswm.modules.todo)
+
+;; Install formatters.
+(dolist (a '((#\T fmt-todo-stats)))
+  (pushnew a *screen-mode-line-formatters* :test 'equal))
 
 (defvar *todos-list* nil
   "Defines list of all todos, saved by user")
@@ -43,7 +47,7 @@
 
 (defstruct todo
   "Todo structure"
-  name description time)
+  name description time done-p)
 
 (define-dswm-type :todo (input prompt)
   (or (argument-pop input)
@@ -52,11 +56,24 @@
                        (get-todo-names-list))))
 
 (define-dswm-type :todo-time (input prompt)
-  (eval (cons 'encode-universal-time
-	      (coerce
-	       (or (argument-pop-rest input)
-		   (read-one-line (current-screen) prompt)) 'list))))
+  (let ((time
+	 (ignore-errors
+	   (eval
+	    (cons 'encode-universal-time
+		  (with-input-from-string
+		      (in (or (argument-pop-rest input)
+			      (read-one-line (current-screen) prompt)))
+		    (loop for x = (read in nil nil) while x collect x)))))))
+    (or time
+;;	(message time)))
+	(error "Incorrect date format")))
 
+  ;; just example
+  ;; (or (argument-pop-rest input)
+  ;;   (read-one-line (current-screen) prompt)))
+  ;; /just example
+  )
+  
 (defun get-todo-names-list (&optional (list *todos-list*))
   (cond
     ((null (car list)) nil)
@@ -98,7 +115,19 @@
 (defun dump-todos (&optional (hbdump *todos-list*))
   (dswm::dump-structure hbdump t *todos-file*))
 
-
+(defun fmt-todo-list (ml)
+  "Returns a string representing the current network activity."
+  (declare (ignore ml))
+  (let ((net (net-usage))
+	dn up)
+    (defun kbmb (x y)
+      (if (>= (/ x 1e6) y)
+	  (list (/ x 1e6) "m")
+	  (list (/ x 1e3) "k")))
+    (setq dn (kbmb (car net) 0.1)
+	  up (kbmb (cadr net) 0.1))
+    (format nil "~A: ~5,2F~A/~5,2F~A " (net-device)
+	    (car dn) (cadr dn) (car up) (cadr up))))
 
 (defcommand todo-add (name description time)
   ((:string "Enter todo name: ")
@@ -122,14 +151,6 @@
    (find-todo-by-name name))
   (dump-todos))
 
-(defcommand todo-open (name)
-  ((:todo "Enter todo name: "))
-  (let ((bookmark (find-todo-by-name name)))
-    (run-shell-command
-     (dswm::concat (todo-description bookmark)
-             " "
-             (todo-time bookmark)))))
-
 (defcommand todo-list () ()
             (let ((list "Name~20tdescription~50ttime~%
 -------------------------------------------------------------------------~%"))
@@ -137,7 +158,7 @@
                 (setf list (concatenate 'string list
                                         (todo-name i) "~20t"
                                         (todo-description i) "~50t"
-                                        (todo-time i) "~%")))
+                                        (prin1-to-string (todo-time i)) "~%")))
                (message list)))
 
 (defcommand todo-reload () ()
@@ -147,7 +168,6 @@
               (dswm::read-dump-from-file *todos-file*))
         (message "Loaded"))
         (message "Nothing to load")))
-
 
 ;; Initialization
 ;;(todo-reload)

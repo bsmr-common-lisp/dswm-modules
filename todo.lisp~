@@ -1,9 +1,9 @@
 ;;; -*- Mode: LISP; Syntax: Common-lisp; Package: dswm.web -*-
 
-;; Copyright 2011 Alexander aka 'CosmonauT' Vynnyk
+;; Copyright 2012 Alexander aka 'CosmonauT' Vynnyk
 ;;
 ;; Author: Alexander aka CosmonauT Vynnyk <cosmonaut.ok@gmail.com>
-;; Version: id: web,v 0.1 05 Feb 2011 cosmonaut.ok@gmail.com
+;; Version: id: web,v 0.1 20 Mar 2012 cosmonaut.ok@gmail.com
 ;; Keywords:
 ;; X-URL: not distributed yet
 
@@ -24,8 +24,8 @@
 ;;; Commentary:
 
 ;;;==================================================================
-;;; Filename: web.lisp
-;;; Web extension for dswm
+;;; Filename: todo.lisp
+;;; TODO for dswm
 ;;;==================================================================
 ;;
 ;;
@@ -51,38 +51,35 @@
                        prompt
                        (get-todo-names-list))))
 
-(define-dswm-type :todo-description (input prompt)
-  (or (argument-pop input)
-      (completing-read (current-screen)
-                       prompt
-                       (get-descriptions-list))))
+(define-dswm-type :todo-time (input prompt)
+  (let ((time
+	 (ignore-errors
+	   (eval
+	    (cons 'encode-universal-time
+		  (with-input-from-string
+		      (in (or (argument-pop-rest input)
+			      (read-one-line (current-screen) prompt)))
+		    (loop for x = (read in nil nil) while x collect x)))))))
+    (or time
+	(error "Incorrect date formta")))
 
-(define-dswm-type :todo-time (input time)
-  (or (argument-pop input)
-      (read-one-line (current-screen) time)))
-                     ;; (if (not
-                     ;;      (cl-ppcre:scan-to-strings "^http\:\/\/|^https\:\/\/" time)
-                     ;;      (concat "http://" prompt)
-                     ;;      prompt)))))
-
+  ;; just example
+  ;; (or (argument-pop-rest input)
+  ;;   (read-one-line (current-screen) prompt)))
+  ;; /just example
+  )
+  
 (defun get-todo-names-list (&optional (list *todos-list*))
   (cond
     ((null (car list)) nil)
     (t (cons (todo-name (car list))
              (get-todo-names-list (cdr list))))))
 
-(defun get-descriptions-list ()
-  (let ((path (cl-ppcre:split ":" (dswm::unix-getenv "PATH")))
-        (descriptions-list))
-    (dolist (i *todos-descriptions-list*)
-      (dolist (j path)
-        (if (probe-file (dswm::concat j "/" i))
-            (setf
-             descriptions-list
-             (dswm::add-to-list
-              descriptions-list
-              (dswm::concat j "/" i))))))
-    descriptions-list))
+(defun get-descriptions-list (&optional (list *todos-list*))
+  (cond
+    ((null (car list)) nil)
+    (t (cons (todo-name (car list))
+             (get-todo-names-list (cdr list))))))
 
 (defun find-todo (&key name description time (list *todos-list*))
   (cond ((null list) nil)
@@ -111,30 +108,27 @@
   `(find-todo :time ,time))
 
 (defun dump-todos (&optional (hbdump *todos-list*))
-  (dswm::dump-to-file hbdump *todos-file*))
+  (dswm::dump-structure hbdump t *todos-file*))
 
 
 
-(defcommand todo-add (name description time open-p)
+(defcommand todo-add (name description time)
   ((:string "Enter todo name: ")
-   (:todo-description "With what description open? ")
-   (:todo-time "Enter TIME to go to ")
-   (:y-or-n "Open right now? "))
+   (:rest "Explain, please, what do you want to do: ")
+   (:todo-time "To what date you have to do this task? "))
   (if
-   (null (find-todo-by-name name))
-   (progn
-     (dswm::add-to-list *todos-list*
-                        (make-todo
-                         :name name
-                         :description description
-                         :time time))
-     (dump-todos)
-     (if (not (null open-p))
-         (todo-open name)))
-   (message "todo '~a' already exists" name)))
+      (null (find-todo-by-name name))
+      (progn
+	(dswm::add-to-list *todos-list*
+			   (make-todo
+			    :name name
+			    :description description
+			    :time time))
+	(dump-todos))
+    (message "todo '~a' already exists" name)))
 
-(defcommand todo-remove (name) ((:todo "Enter todo
-  name to remove: "))
+(defcommand todo-remove (name) ((:todo "What todo
+  do you want to remove? "))
   (dswm::remove-from-list
    *todos-list*
    (find-todo-by-name name))
