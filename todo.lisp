@@ -36,14 +36,20 @@
 (in-package :dswm.modules.todo)
 
 ;; Install formatters.
-(dolist (a '((#\T fmt-todo-stats)))
-  (pushnew a *screen-mode-line-formatters* :test 'equal))
+;; (dolist (a '((#\T fmt-todo-stats)))
+;;   (pushnew a *screen-mode-line-formatters* :test 'equal))
+
+(defvar *day-names*
+  '("Mon" "Tue" "Wed"
+    "Thu" "Fri" "Sat"
+    "Sun"))
 
 (defvar *todos-list* nil
   "Defines list of all todos, saved by user")
 
 (defvar *todos-file* (data-dir-file "todos" "list")
   "Defines default todo file")
+
 
 (defstruct todo
   "Todo structure"
@@ -115,19 +121,12 @@
 (defun dump-todos (&optional (hbdump *todos-list*))
   (dswm::dump-structure hbdump t *todos-file*))
 
-(defun fmt-todo-list (ml)
-  "Returns a string representing the current network activity."
-  (declare (ignore ml))
-  (let ((net (net-usage))
-	dn up)
-    (defun kbmb (x y)
-      (if (>= (/ x 1e6) y)
-	  (list (/ x 1e6) "m")
-	  (list (/ x 1e3) "k")))
-    (setq dn (kbmb (car net) 0.1)
-	  up (kbmb (cadr net) 0.1))
-    (format nil "~A: ~5,2F~A/~5,2F~A " (net-device)
-	    (car dn) (cadr dn) (car up) (cadr up))))
+;; (defun fmt-todo-list (ml)
+;;   "Returns a string representing the current network activity."
+;;   (declare (ignore ml))
+;;   (let ((todos-number ___)
+;; 	(todos-expired-number ___))
+;;     ))
 
 (defcommand todo-add (name description time)
   ((:string "Enter todo name: ")
@@ -152,14 +151,27 @@
   (dump-todos))
 
 (defcommand todo-list () ()
-            (let ((list "Name~20tdescription~50ttime~%
--------------------------------------------------------------------------~%"))
-              (dolist (i *todos-list*)
-                (setf list (concatenate 'string list
-                                        (todo-name i) "~20t"
-                                        (todo-description i) "~50t"
-                                        (prin1-to-string (todo-time i)) "~%")))
-               (message list)))
+  (let ((list "Name~20tdescription~50ttime(hh:mm dd/mm/yyyy)~50tExpired?~%
+---------------------------------------------------------------------------------~%"))
+    (dolist (i *todos-list*)
+      (let ((todo-decoded-time
+	     (multiple-value-bind
+		 (second minute hour date month year day-of-week dst-p tz)
+		 (decode-universal-time (todo-time i))
+	       (format nil "~2,'0d:~2,'0d ~2,'0d/~2,'0d/~d ~a"
+		       hour
+		       minute
+		       date
+		       month
+		       year
+		       (nth day-of-week *day-names*))))
+	    (todo-expired-p (if (> (get-universal-time) (todo-time i)) "Expired" nil)))
+	(setf list (concatenate 'string list
+				(todo-name i) "~20t"
+				(todo-description i) "~50t"
+				todo-decoded-time "~50t"
+				todo-expired-p "~%"))))
+    (message list)))
 
 (defcommand todo-reload () ()
   (if (probe-file *todos-file*)
