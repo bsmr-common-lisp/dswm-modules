@@ -62,24 +62,18 @@
                        (get-todo-names-list))))
 
 (define-dswm-type :todo-time (input prompt)
-  (let ((time
-	 (ignore-errors
-	   (eval
-	    (cons 'encode-universal-time
-		  (with-input-from-string
-		      (in (or (argument-pop-rest input)
-			      (read-one-line (current-screen) prompt)))
-		    (loop for x = (read in nil nil) while x collect x)))))))
-    (or time
-;;	(message time)))
-	(error "Incorrect date format")))
+	   (let* ((current-time
+		  (multiple-value-bind (s min h d m y d-o-w tz) (get-decoded-time) (format nil "~a ~a ~a ~a ~a ~a" s min h d m y)))
+		 (time
+		  (or (argument-pop-rest input)
+			  (read-one-line (current-screen) prompt :initial-input current-time))))
+	     (or
+	      (ignore-errors
+		(eval
+		 (cons 'encode-universal-time
+		       (with-input-from-string (in time) (loop for x = (read in nil nil) while x collect x)))))
+	      (error "Incorrect date format"))))
 
-  ;; just example
-  ;; (or (argument-pop-rest input)
-  ;;   (read-one-line (current-screen) prompt)))
-  ;; /just example
-  )
-  
 (defun get-todo-names-list (&optional (list *todos-list*))
   (cond
     ((null (car list)) nil)
@@ -118,8 +112,26 @@
 (defmacro find-todo-by-time (time)
   `(find-todo :time ,time))
 
-(defun dump-todos (&optional (hbdump *todos-list*))
-  (dswm::dump-structure hbdump t *todos-file*))
+(defun dump-structure (structure to-fs file &optional backup-p)
+  "Dump some code, values etc to file or just to output (from reoisitory. Not needed in dswm v.0.0.5"
+  (if to-fs
+      (progn
+	(when (and backup-p (file-exists-p file))
+	  (copy-file
+	   file
+	   (merge-pathnames
+	    (make-pathname :type (concat (pathname-type file) "~")) file)
+	   :overwrite t))
+	(with-open-file (fp file :direction :output :if-exists :supersede)
+			(with-standard-io-syntax
+			 (let ((*package* (find-package :dswm))
+			       (*print-pretty* t))
+			   (prin1 structure fp))))
+	structure)
+    structure))
+
+(defun dump-todos (&optional (tododump *todos-list*))
+  (dswm::dump-structure tododump t *todos-file*))
 
 ;; (defun fmt-todo-list (ml)
 ;;   "Returns a string representing the current network activity."
@@ -131,7 +143,7 @@
 (defcommand todo-add (name description time)
   ((:string "Enter todo name: ")
    (:rest "Explain, please, what do you want to do: ")
-   (:todo-time "To what date you have to do this task? "))
+   (:todo-time "To what date you have to do this task?(Format: sec min hour day mon year) "))
   (if
       (null (find-todo-by-name name))
       (progn
@@ -182,8 +194,7 @@
         (message "Nothing to load")))
 
 ;; Initialization
-;;(todo-reload)
-;;(add-to-list *todos-list*
+(todo-reload)
 
-;;; web.lisp ends here
+;;; todo.lisp ends here
 
