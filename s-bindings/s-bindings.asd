@@ -4,11 +4,11 @@
 (in-package :s-bindings-system)
 
 (defsystem :s-bindings
-  :name "CPU"
-  :author "Anonymous Coward, Jonathan Moore Liles"
+  :name "s-bindings"
+  :author "Alexander aka 'CosmonauT' Vynnyk"
   :version "0.1"
-  maintainer
+  :maintainer "Alexander aka 'CosmonauT' Vynnyk"
   :license "GNU General Public License v2 or later"
-  :description "-*- Mode: LISP"
+  :description "External bindings, using 'Super' key for DSWM"
   :serial t
   :components ((:file "s-bindings")))

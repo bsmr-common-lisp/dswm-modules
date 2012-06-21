@@ -5,9 +5,9 @@
 
 (defsystem :cpu
   :name "CPU"
-  :author "Anonymous Coward, Jonathan Moore Liles"
+  :author "Julian Stecklina"
   :version "0.1"
-;;  maintainer
+  :maintainer "Alexander aka 'CosmonauT' Vynnyk"
   :license "GNU General Public License v2 or later"
   :description "CPU formatters for the mode-line"
   :serial t

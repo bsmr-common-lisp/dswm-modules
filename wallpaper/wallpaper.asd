@@ -4,11 +4,11 @@
 (in-package :wallpaper-system)
 
 (defsystem :wallpaper
-  :name "CPU"
-  :author "Anonymous Coward, Jonathan Moore Liles"
+  :name "Wallpaper"
+  :author "Alexander aka 'CosmonauT' Vynnyk"
   :version "0.1"
-  maintainer
+  :maintainer "Alexander aka CosmonauT Vynnyk"
   :license "GNU General Public License v2 or later"
-  :description "(defstruct wallpaper-maker"
+  :description "Module for setting wallpapers on root window, using various backends"
   :serial t
   :components ((:file "wallpaper")))

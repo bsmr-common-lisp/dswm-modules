@@ -4,11 +4,11 @@
 (in-package :notifications-system)
 
 (defsystem :notifications
-  :name "CPU"
-  :author "Anonymous Coward, Jonathan Moore Liles"
+  :name "Notifications"
+  :author "Tassilo Horn <tassilo@member.fsf.org>"
   :version "0.1"
-  maintainer
-  :license "GNU General Public License v2 or later"
+  :maintainer "Alexander aka CosmonauT Vynnyk"
+  :license "GNU General Public License v3 or later"
   :description "notifications.lisp -- Poor man's systray for DSWM"
   :serial t
   :components ((:file "notifications")))

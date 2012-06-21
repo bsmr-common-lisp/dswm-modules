@@ -4,10 +4,10 @@
 (in-package :disk-system)
 
 (defsystem :disk
-  :name "CPU"
-  :author "Anonymous Coward, Jonathan Moore Liles"
+  :name "Disk"
+  :author "Morgan Veyret"
   :version "0.1"
-  maintainer
+  :maintainer "Alexander aka CosmonauT Vynnyk"
   :license "GNU General Public License v2 or later"
   :description "Disk usage monitoring for dswm's modeline"
   :serial t

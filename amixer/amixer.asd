@@ -4,10 +4,10 @@
 (in-package :amixer-system)
 
 (defsystem :amixer
-  :name "CPU"
-  :author "Anonymous Coward, Jonathan Moore Liles"
+  :name "Amixer"
+  :author "Amy Templeton, Jonathan Moore Liles, Ivy Foster"
   :version "0.1"
-  maintainer
+  :maintainer "Ivy Foster"
   :license "GNU General Public License v2 or later"
   :description "Amixer module for DSWM."
   :serial t

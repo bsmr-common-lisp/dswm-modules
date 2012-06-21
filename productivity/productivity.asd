@@ -4,10 +4,10 @@
 (in-package :productivity-system)
 
 (defsystem :productivity
-  :name "CPU"
-  :author "Anonymous Coward, Jonathan Moore Liles"
+  :name "Productivity"
+  :author "Ivy Foster"
   :version "0.1"
-  maintainer
+  :maintainer "Alexander aka CosmonauT Vynnyk"
   :license "GNU General Public License v2 or later"
   :description ""
   :serial t
