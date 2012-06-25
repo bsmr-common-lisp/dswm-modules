@@ -47,7 +47,7 @@
 (defvar *todos-list* nil
   "Defines list of all todos, saved by user")
 
-(defvar *todos-file* (data-dir-file "todos" "list")
+(defvar *todos-file* (data-dir-file "todos" :type "list")
   "Defines default todo file")
 
 
