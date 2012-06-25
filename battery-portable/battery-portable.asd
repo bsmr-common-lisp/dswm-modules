@@ -4,10 +4,10 @@
 (in-package :battery-portable-system)
 
 (defsystem :battery-portable
-  :name "CPU"
-  :author "Anonymous Coward, Jonathan Moore Liles"
+  :name "Battery portable"
+  :author "Julian Stecklina"
   :version "0.1"
-  maintainer
+  :maintainer "Alexander aka 'CosmonauT' Vynnyk"
   :license "GNU General Public License v2 or later"
   :description "Portable battery information for DSWM's mode-line."
   :serial t

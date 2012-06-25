@@ -4,10 +4,10 @@
 (in-package :twitter-system)
 
 (defsystem :twitter
-  :name "CPU"
+  :name "Twitter"
   :author "Anonymous Coward, Jonathan Moore Liles"
   :version "0.1"
-  maintainer
+  :maintainer "Alexander aka CosmonauT Vynnyk"
   :license "GNU General Public License v2 or later"
   :description "TODO"
   :serial t

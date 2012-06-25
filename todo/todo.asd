@@ -4,11 +4,11 @@
 (in-package :todo-system)
 
 (defsystem :todo
-  :name "CPU"
-  :author "Anonymous Coward, Jonathan Moore Liles"
+  :name "TODO"
+  :author "Alexander aka CosmonauT Vynnyk <cosmonaut.ok@gmail.com>"
   :version "0.1"
-  maintainer
+  :maintainer "Alexander aka CosmonauT Vynnyk"
   :license "GNU General Public License v2 or later"
-  :description "-*- Mode: LISP"
+  :description "TODO module for DSWM"
   :serial t
   :components ((:file "todo")))

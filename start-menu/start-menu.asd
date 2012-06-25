@@ -4,11 +4,11 @@
 (in-package :start-menu-system)
 
 (defsystem :start-menu
-  :name "CPU"
-  :author "Anonymous Coward, Jonathan Moore Liles"
+  :name "start-menu"
+  :author "Alexander aka 'CosmonauT' Vynnyk <cosmonaut.ok@gmail.com>"
   :version "0.1"
-  maintainer
+  :maintainer "Alexander aka CosmonauT Vynnyk"
   :license "GNU General Public License v2 or later"
-  :description "-*- Mode: LISP"
+  :description "Start menu for launch programs"
   :serial t
   :components ((:file "start-menu")))
