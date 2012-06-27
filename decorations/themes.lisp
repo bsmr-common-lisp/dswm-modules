@@ -30,15 +30,7 @@
 ;;
 
 ;;; Code:
-
-(in-package :dswm-user)
-
-(defvar *current-theme*)
-
-(defpackage :dswm.modules.decorations
-  (:use :cl :dswm)
-
-(in-package #:dswm.modules.decorations)
+(in-package #:dswm)
 
 ;; ;; ;;        (run-shell-command (conat "xsetroot -solid " bg-color) t)
 ;; ;; ;;        (run-shell-command (format nil "xsetroot -cursor_name left_ptr -fg \"~a\"" fg-color bg-color))
