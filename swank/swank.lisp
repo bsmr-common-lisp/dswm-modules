@@ -66,7 +66,13 @@
            #:y-or-n-p-in-emacs
            #:*find-definitions-right-trim*
            #:*find-definitions-left-trim*
-	   #:*servers*))
+	   #:*servers*
+           #:*new-connection-hook*
+           #:*connection-closed-hook*
+           #:*pre-reply-hook*
+           #:*after-init-hook*
+           #:add-hook))
+
 
 (in-package :swank)
 
@@ -79,7 +85,7 @@
 (defconstant keyword-package (find-package :keyword)
   "The KEYWORD package.")
 
-(defconstant default-server-port 4005
+(defconstant default-server-port 4006
   "The default TCP port for the server (when started manually).")
 
 (defvar *swank-debug-p* t

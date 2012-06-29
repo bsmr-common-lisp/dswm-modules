@@ -11,6 +11,20 @@ swank-stop-server
 swank-restart-server
 swank-list-servers
 
+Available hooks:
+*new-connection-hook* This hook is run each time a
+connection is established. The connection structure
+is given as the argument. Backend code should treat
+the connection structure as opaque.
+*connection-closed-hook* This hook is run when a
+connection is closed. The connection as passed
+as an argument. Backend code should treat the
+ connection structure as opaque.
+*pre-reply-hook* Hook run (without arguments) 
+immediately before replying to an RPC
+*after-init-hook* "Hook run after user init files are loaded
+USAGE: (swank:add-hook swank:*after-init-hook* '(message "42"))
+
 FAQ
 Q. Is it SLIME?
 A. This is not SLIME. This it SWANK module for DSWM
