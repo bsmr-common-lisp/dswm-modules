@@ -1,0 +1,25 @@
+SWANK DSWM module - is a cut and modified SWANK
+server from SLIME package, adopted for usage
+with DSWM
+
+This module allows to create, delete and manage
+SWANK servers, which integrated to DSWM
+
+Available commands:
+swank-start-server
+swank-stop-server
+swank-restart-server
+swank-list-servers
+
+FAQ
+Q. Is it SLIME?
+A. This is not SLIME. This it SWANK module for DSWM
+   README, news, documentation about SLIME you can 
+   find on official SLIME site: 
+   http://common-lisp.net/project/slime/
+   Also, you can download SLIME from it
+
+Q. Can I use it with stumpwm?
+A. It can't be used for StumpWM without modifications
+   If you want to help stumpwm and modify this to use
+   with stumpwm, you can do it yourself ;)

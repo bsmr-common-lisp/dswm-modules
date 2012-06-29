@@ -65,7 +65,8 @@
            #:eval-in-emacs
            #:y-or-n-p-in-emacs
            #:*find-definitions-right-trim*
-           #:*find-definitions-left-trim*))
+           #:*find-definitions-left-trim*
+	   #:*servers*))
 
 (in-package :swank)
 

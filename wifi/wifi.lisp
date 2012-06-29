@@ -38,7 +38,7 @@
 ;;; Linux with a mounted sysfs.
 
 (defpackage :dswm.contrib.wifi
-  (:use :common-lisp :dswm )
+  (:use :common-lisp :dswm)
   (:export #:*iwconfig-path*
            #:*wireless-device*))
 (in-package :dswm.contrib.wifi)
@@ -73,7 +73,7 @@ prev-val."
 
 (defun guess-iwconfig-path()
   (with-output-to-string (asdf::*verbose-out*)
-    (asdf:run-shell-command "which iwconfig")))
+    (run-shell-command "which iwconfig" t)))
 
 (defun guess-wireless-device ()
   (or (loop
