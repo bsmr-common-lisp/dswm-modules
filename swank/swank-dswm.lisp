@@ -1,8 +1,15 @@
-;; Load swank.
-;; *prefix-key* ; swank will kick this off
+;;; -*- Mode: LISP; Syntax: Common-lisp; Package: dswm.module.swank -*-
+
+;;; Created 2012, Alexander aka 'CosmonauT' Vynnyk <cosmonaut<dot>ok[at]gmail[dot]com>
+
+;;; This code has been placed in the Public Domain.  All warranties are
+;;; disclaimed.
+;;
+;;; Code:
 
 (defpackage :dswm.module.swank
-  (:use :cl :dswm :swank))
+  (:use :cl :dswm :swank)
+  (::shadowing-import-from :swank #:add-hook))
 
 (in-package :dswm.module.swank)
 

@@ -31,48 +31,57 @@
 ;;
 ;;; Code:
 (defpackage :dswm.module.todo
-  (:use :cl :dswm :cl-ppcre))
+  (:use :common-lisp :dswm :cl-ppcre))
 
-;; (in-package :dswm.module.todo)
-(in-package :dswm)
+(in-package :dswm.module.todo)
 
 ;; Install formatters.
 ;; (dolist (a '((#\T fmt-todo-stats)))
 ;;   (pushnew a *screen-mode-line-formatters* :test 'equal))
 
-(defvar *todo-priorities*
-  '("Low" "Normal" "High" "Urgent"))
+(defvar *day-names*
+  '("Mon" "Tue" "Wed"
+    "Thu" "Fri" "Sat"
+    "Sun"))
+
+(defvar *statuses*
+  '("new" "in progress" "done" "delayed")
 
 (defvar *todos-list* nil
   "Defines list of all todos, saved by user")
 
-(defvar *todos-file* (data-dir-file "todos" "list")
+(defvar *todos-file* (data-dir-file "todos" :type "list")
   "Defines default todo file")
+
 
 (defstruct todo
   "Todo structure"
-  name description priority)
+  name description time status)
 
 (define-dswm-type :todo (input prompt)
   (or (argument-pop input)
       (completing-read (current-screen)
-                       prompt (get-todo-names-list))))
+                       prompt
+                       (get-todo-names-list))))
 
-(define-dswm-type :todo-priority (input prompt)
-  (let ((match (member 
-		(or (argument-pop input)
-		    (completing-read (current-screen)
-				     prompt *todo-priorities* :initial-input "Normal"))
-		*todo-priorities* :test 'equal)))
-    (or (car match)
-        (throw 'error "Use standard priorities, or edit it (read the module manual, how to do this)"))))
+(define-dswm-type :todo-time (input prompt)
+	   (let* ((current-time
+		   (multiple-value-bind (s min h d m y d-o-w tz) (get-decoded-time) (format nil "~a ~a ~a ~a" h d m y)))
+		 (time
+		  (or (argument-pop-rest input)
+			  (read-one-line (current-screen) prompt :initial-input current-time))))
+	     (or
+	      (ignore-errors
+		(eval
+		 (cons 'encode-universal-time
+		       (with-input-from-string (in time) (loop for x = (read in nil nil) while x collect x)))))
+	      (error "Incorrect date format"))))
 
 (defun get-todo-names-list (&optional (list *todos-list*))
-  "Gets list of TODO names"
   (cond
-   ((null (car list)) nil)
-   (t (cons (todo-name (car list))
-	    (get-todo-names-list (cdr list))))))
+    ((null (car list)) nil)
+    (t (cons (todo-name (car list))
+             (get-todo-names-list (cdr list))))))
 
 (defun get-descriptions-list (&optional (list *todos-list*))
   (cond
@@ -80,21 +89,21 @@
     (t (cons (todo-name (car list))
              (get-todo-names-list (cdr list))))))
 
-(defun find-todo (&key name description priority (list *todos-list*))
+(defun find-todo (&key name description time (list *todos-list*))
   (cond ((null list) nil)
         ((or
           (and (not (null name))
                (equal name (todo-name (car list))))
           (and (not (null description))
                (equal description (todo-description (car list))))
-          (and (not (null priority))
-               (equal priority (todo-priority (car list)))))
+          (and (not (null time))
+               (equal time (todo-time (car list)))))
          (car list))
         (t
          (find-todo
           :name name
           :description description
-          :priority priority
+          :time time
           :list (cdr list)))))
 
 (defmacro find-todo-by-name (name)
@@ -103,11 +112,29 @@
 (defmacro find-todo-by-description (description)
   `(find-todo :description ,description))
 
-(defmacro find-todo-by-priority (priority)
-  `(find-todo :priority ,priority))
+(defmacro find-todo-by-time (time)
+  `(find-todo :time ,time))
+
+(defun dump-structure (structure to-fs file &optional backup-p)
+  "Dump some code, values etc to file or just to output (from reoisitory. Not needed in dswm v.0.0.5"
+  (if to-fs
+      (progn
+	(when (and backup-p (file-exists-p file))
+	  (copy-file
+	   file
+	   (merge-pathnames
+	    (make-pathname :type (concat (pathname-type file) "~")) file)
+	   :overwrite t))
+	(with-open-file (fp file :direction :output :if-exists :supersede)
+			(with-standard-io-syntax
+			 (let ((*package* (find-package :dswm))
+			       (*print-pretty* t))
+			   (prin1 structure fp))))
+	structure)
+    structure))
 
 (defun dump-todos (&optional (tododump *todos-list*))
-  (dump-structure tododump t *todos-file*))
+  (dswm::dump-structure tododump t *todos-file*))
 
 ;; (defun fmt-todo-list (ml)
 ;;   "Returns a string representing the current network activity."
@@ -116,11 +143,10 @@
 ;; 	(todos-expired-number ___))
 ;;     ))
 
-(defcommand todo-add (name description priority)
+(defcommand todo-add (name description time)
   ((:string "Enter todo name: ")
    (:rest "Explain, please, what do you want to do: ")
-   (:todo-priority "How important this task for you (Low,Normal,High,Urgent)? "))
-  "Add TODO to todo-list"
+   (:todo-time "To what date you have to do this task?(Format: sec min hour day mon year) "))
   (if
       (null (find-todo-by-name name))
       (progn
@@ -128,36 +154,47 @@
 			   (make-todo
 			    :name name
 			    :description description
-			    :priority priority))
+			    :time time))
 	(dump-todos))
     (message "todo '~a' already exists" name)))
 
-(defcommand todo-remove (name) ((:todo "What todo do you want to remove? "))
-  "Remove TODO from todo-list"
-  (remove-from-list
+(defcommand todo-remove (name) ((:todo "What todo
+  do you want to remove? "))
+  (dswm::remove-from-list
    *todos-list*
    (find-todo-by-name name))
   (dump-todos))
 
 (defcommand todo-list () ()
-  "Show list of all active todo`s"
-  (let ((list "Name~20tdescription~50tpriority~%
-----------------------------------------------------------~%"))
+  (let ((list "Name~20tdescription~50ttime(hh:mm dd/mm/yyyy)~50tExpired?~%
+---------------------------------------------------------------------------------~%"))
     (dolist (i *todos-list*)
-      (setf list (concatenate 'string list
-			      (todo-name i) "~20t"
-			      (todo-description i) "~50t"
-			      (todo-priority i) "~10t~%")))
+      (let ((todo-decoded-time
+	     (multiple-value-bind
+		 (second minute hour date month year day-of-week dst-p tz)
+		 (decode-universal-time (todo-time i))
+	       (format nil "~2,'0d:~2,'0d ~2,'0d/~2,'0d/~d ~a"
+		       hour
+		       minute
+		       date
+		       month
+		       year
+		       (nth day-of-week *day-names*))))
+	    (todo-expired-p (if (> (get-universal-time) (todo-time i)) "Expired" nil)))
+	(setf list (concatenate 'string list
+				(todo-name i) "~20t"
+				(todo-description i) "~50t"
+				todo-decoded-time "~50t"
+				todo-expired-p "~%"))))
     (message list)))
 
 (defcommand todo-reload () ()
-  "Reread todo-list from file"
   (if (probe-file *todos-file*)
       (progn
         (setf *todos-list*
-              (read-dump-from-file *todos-file*))
+              (dswm::read-dump-from-file *todos-file*))
         (message "Loaded"))
-    (message "Nothing to load")))
+        (message "Nothing to load")))
 
 ;; Initialization
 (todo-reload)
