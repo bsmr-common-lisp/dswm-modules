@@ -148,7 +148,7 @@
 			      (todo-name i) "~20t"
 			      (todo-description i) "~50t"
 			      (todo-priority i) "~10t~%")))
-    (message list)))
+    (message-no-timeout list)))
 
 (defcommand todo-reload () ()
   "Reread todo-list from file"

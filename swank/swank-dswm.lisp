@@ -9,7 +9,7 @@
 
 (defpackage :dswm.module.swank
   (:use :cl :dswm :swank)
-  (::shadowing-import-from :swank #:add-hook))
+  (:shadowing-import-from :dswm #:add-hook #:message))
 
 (in-package :dswm.module.swank)
 
@@ -76,4 +76,4 @@
       (message (format nil "Server on port ~a restarted" port))
     (message "Failed to restart server")))
 
-;; TODO: make possibility to create ssh tunnel to eth0 etc
+;; ;; TODO: make possibility to create ssh tunnel to eth0 etc

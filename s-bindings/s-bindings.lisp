@@ -98,7 +98,13 @@
   ("s-M-Down"  "move-window down")
   ("s-M-Left"  "move-window left")
   ("s-M-Right" "move-window right")
- )
+
+  ;; Nex-previous
+  ("s-}" "gnext")
+  ("s-{" "gprev")
+  ("s-]" "fnext")
+  ("s-[" "fother")
+  )
 
 
 ;;; s-bindings.lisp ends here
