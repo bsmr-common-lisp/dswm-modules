@@ -9,7 +9,7 @@
 
 (defpackage :dswm.module.swank
   (:use :cl :dswm :swank)
-  (:shadowing-import-from :dswm #:add-hook #:message))
+  (:shadowing-import-from :dswm #:add-hook #:message #:describe-function))
 
 (in-package :dswm.module.swank)
 
