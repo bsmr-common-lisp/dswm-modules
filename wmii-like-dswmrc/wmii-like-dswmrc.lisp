@@ -12,11 +12,6 @@
 
 (in-package :dswm)
 
-;;; A mode line showing all groups in its first and all windows in the
-;;; current group in the second line.
-
-(setq *screen-mode-line-format* (format nil "%g~%%W"))
-
 ;;; Wmii-like keybindings
 
 (defvar *terminal* "xterm"
@@ -70,5 +65,9 @@
 
 (defcommand exec-in-terminal (cmd) ((:string "Command: "))
   (run-shell-command (format nil "~A -e ~A" *terminal* cmd)))
+
+;;; A mode line showing all groups in its first and all windows in the
+;;; current group in the second line.
+(enable-mode-line (current-screen) (current-head) :ds (format nil "%g~%%W"))
 
 ;;; EOF

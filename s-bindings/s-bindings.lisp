@@ -32,7 +32,17 @@
 ;;
 
 ;;; Code:
-(in-package :dswm)
+(defpackage :dswm.module.s-bindings
+  (:use :cl :dswm))
+
+(in-package :dswm.module.s-bindings)
+
+(defmacro defkey-top (key cmd)
+  `(define-key *top-map* (kbd ,key) ,cmd))
+
+(defmacro defkeys-top (&rest keys)
+  (let ((ks (mapcar #'(lambda (k) (cons 'defkey-top k)) keys)))
+    `(progn ,@ks)))
 
 (defkeys-top
   ;; experimental addon s-based keybindings
@@ -99,11 +109,11 @@
   ("s-M-Left"  "move-window left")
   ("s-M-Right" "move-window right")
 
-  ;; Nex-previous
-  ("s-}" "gnext")
-  ("s-{" "gprev")
-  ("s-]" "fnext")
-  ("s-[" "fother")
+  ;; ;; Nex-previous
+  ;; ("s-}" "gnext")
+  ;; ("s-{" "gprev")
+  ;; ("s-]" "fnext")
+  ;; ("s-[" "fother")
   )
 
 
