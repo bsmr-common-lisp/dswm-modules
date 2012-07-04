@@ -11,4 +11,5 @@
   :license "GNU General Public License v2 or later"
   :description "Web extension for DSWM"
   :serial t
-  :components ((:file "web")))
+  :components ((:file "web")
+	       (:file "hyperbookmarks")))

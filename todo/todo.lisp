@@ -46,7 +46,7 @@
 (defvar *todos-list* nil
   "Defines list of all todos, saved by user")
 
-(defvar *todos-file* (data-dir-file "todos" "list")
+(defvar *todos-file* (data-dir-file "todos" "list" "save.d")
   "Defines default todo file")
 
 (defstruct todo
@@ -124,20 +124,22 @@
   (if
       (null (find-todo-by-name name))
       (progn
-	(dswm::add-to-list *todos-list*
-			   (make-todo
-			    :name name
-			    :description description
-			    :priority priority))
-	(dump-todos))
+       (dswm::add-to-list *todos-list*
+			  (make-todo
+			   :name name
+			   :description description
+			   :priority priority))
+       (message "todo ~a added" name)
+       (dump-todos))
     (message "todo '~a' already exists" name)))
 
 (defcommand todo-remove (name) ((:todo "What todo do you want to remove? "))
   "Remove TODO from todo-list"
-  (remove-from-list
-   *todos-list*
-   (find-todo-by-name name))
-  (dump-todos))
+  (if
+      (and (remove-from-list *todos-list* (find-todo-by-name name))
+	   (dump-todos))
+      (message "todo ~a removed" name)
+    (message "failed to remove ~a" name)))
 
 (defcommand todo-list () ()
   "Show list of all active todo`s"
