@@ -9,7 +9,11 @@
 
 (defpackage :dswm.module.swank
   (:use :cl :dswm :swank)
+<<<<<<< HEAD
   (:shadowing-import-from :dswm #:add-hook #:message #:DESCRIBE-FUNCTION))
+=======
+  (:shadowing-import-from :dswm #:add-hook #:message #:describe-function))
+>>>>>>> d74d1c2ba868fc7daa0c015d16493375ce5bc0ec
 
 (in-package :dswm.module.swank)
 
