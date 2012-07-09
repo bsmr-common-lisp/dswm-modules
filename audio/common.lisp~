@@ -1,0 +1,6 @@
+
+(in-package :dswm.module.audio)
+
+(defun show-volume (percentage &optional head-message)
+  (message
+   (concat head-message " Volume: " (princ-to-string percentage) "% " (bar-zone-color percentage) "[" (bar percentage 25 #\# #\-) "]")))

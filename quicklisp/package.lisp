@@ -286,5 +286,11 @@
            #:*local-project-directories*
            #:list-local-projects))
 
+(defpackage #:ql-dswm
+  (:use #:cl
+        #:ql
+	#:dswm))
+
+  
 (in-package #:quicklisp-client)
 

@@ -1,12 +1,18 @@
-;;;; quicklisp.asd
+(defpackage :ql4ds-system
+  (:use :cl :asdf))
+
+(in-package :ql4ds-system)
 
 (asdf:defsystem #:quicklisp
-  :description "The Quicklisp client application."
-  :author "Zach Beane <zach@quicklisp.org>"
+  :name "quicklisp"
+  :description "The Quicklisp client application, adopted for useing as DSWM module"
+  :author "Zach Beane <zach@quicklisp.org> Alexander aka CosmonauT Vynnyk <cosmonaut.ok@gmail.com>"
+  :maintainer "Alexander aka CosmonauT Vynnyk"
   :license "BSD-style"
   :serial t
   :version "2012010700"
-  :components ((:file "package")
+  :components ((:file "init")
+	       (:file "package")
                (:file "utils")
                (:file "config")
                (:file "impl")
@@ -23,4 +29,5 @@
                (:file "client-update")
                (:file "dist-update")
                (:file "misc")
-               (:file "local-projects")))
+               (:file "local-projects")
+	       (:file "quicklisp-dswm")))

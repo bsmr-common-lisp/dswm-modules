@@ -6,12 +6,39 @@
 
 (in-package #:ql-setup)
 
-(unless *load-truename*
-  (error "This file must be LOADed to set up quicklisp."))
+;;;;;;;;;;;; small dswm lib ;;;;;;;;;;;;;;;;;;
+(defvar *data-dir* nil
+  "Set default data directory")
 
-(defvar *quicklisp-home*
-  (make-pathname :name nil :type nil
-                 :defaults *load-truename*))
+(defun concat (&rest strings)
+  "Concatenates strings, like the Unix command 'cat'.
+A short for (concatenate 'string foo bar)."
+  (apply 'concatenate 'string strings))
+
+(defun data-dir (&optional subdir)
+  (let ((directory
+	 (if (not (null *data-dir*))
+	     (make-pathname :directory (concat *data-dir* "/" subdir))
+	   (make-pathname
+	    :directory (append
+			(pathname-directory (user-homedir-pathname))
+			(list (concat ".dswm.d"	"/" subdir)))))))
+    (when (ensure-directories-exist directory)
+      directory)))
+
+(defun data-dir-file (name &optional type subdir)
+  "Return a pathname inside dswm's data dir with the specified name and type"
+  (if (not (null type))
+      (make-pathname :name name :type type :defaults (data-dir subdir))
+    (make-pathname :name name :defaults (data-dir subdir))))
+;;;;;;;;;;;; /small dswm lib ;;;;;;;;;;;;;;;;;
+
+(defun quicklisp-data-dir ()
+  "Return a pathname inside dswm's module data dir with the specified name and type"
+  (let ((dir-path (concat (princ-to-string (data-dir)) "/save.d/ql4ds/")))
+    (make-pathname :defaults dir-path)))
+
+(defvar *quicklisp-home* (quicklisp-data-dir))
 
 (defun qmerge (pathname)
   "Return PATHNAME merged with the base Quicklisp directory."
@@ -123,12 +150,12 @@ compiling asdf.lisp to a FASL and then loading it."
     (with-simple-restart (skip "Skip loading ~S" asdf-init)
       (load asdf-init :verbose nil :print nil))))
 
-(push (qmerge "quicklisp/") asdf:*central-registry*)
+(push (qmerge "quicklisp/") asdf:*central-registry*) ;; change to module dir
 
-(let ((*compile-print* nil)
-      (*compile-verbose* nil)
-      (*load-verbose* nil)
-      (*load-print* nil))
-  (asdf:oos 'asdf:load-op "quicklisp" :verbose nil))
+;; (let ((*compile-print* nil)
+;;       (*compile-verbose* nil)
+;;       (*load-verbose* nil)
+;;       (*load-print* nil))
+;;   (asdf:oos 'asdf:load-op "quicklisp" :verbose nil))
 
-(quicklisp:setup)
+;; (quicklisp:setup)

@@ -31,15 +31,44 @@
 ;;; Then you can use ...
 ;;;
 
-(in-package :dswm-user)
+(defpackage :dswm.module.emacs
+  (:use :cl :dswm :dswm-user)
+  (:export *use-daemon-p*))
 
-(export '(*use-daemon-p*))
+(in-package :dswm.modules.emacs)
 
 (defvar *emacs-use-daemon-p* nil
   "Use emacs daemon, or no")
 
-(defpackage :dswm.modules.emacs
-  (:use :cl :dswm))
+(defvar *emacs-daemon-command* "emacs --daemon")
+(defvar *emacs-client-command* "emacsclient")
+(defvar *emacs-client-options* (make-hash-table :test 'equal))
+(defvar *emacs-options* (make-hash-table :test 'equal))
+(defvar *emacs-client-alternate-editor* "emacs")
 
-(in-package :dswm.modules.emacs)
+(setf
+ (gethash 'version *emacs-client-options*) "-v"
+ (gethash 'help *emacs-client-options*) "-H"
+ (gethash 'no-windows *emacs-client-options*) "-nw"
+ (gethash 'new-frame *emacs-client-options*) "-c"
+ (gethash 'eval *emacs-client-options*) "-e"
+ (gethash 'quiet *emacs-client-options*) "-q"
+ (gethash 'socket *emacs-client-options*) "-s"
+ (gethash 'server *emacs-client-options*) "-f"
+ (gethash 'alt *emacs-client-options*) "-a"
+)
 
+(setf
+ (gethash 'version *emacs-client-options*) "-v"
+ (gethash 'help *emacs-client-options*) "-H"
+ (gethash 'no-windows *emacs-client-options*) "-nw"
+ (gethash 'new-frame *emacs-client-options*) "-c"
+ (gethash 'eval *emacs-client-options*) "-e"
+ (gethash 'quiet *emacs-client-options*) "-q"
+ (gethash 'socket *emacs-client-options*) "-s"
+ (gethash 'server *emacs-client-options*) "-f"
+ (gethash 'alt *emacs-client-options*) "-a"
+)
+ 
+(defvar *emacs-command* 
+  
