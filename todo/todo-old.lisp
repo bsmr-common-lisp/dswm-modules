@@ -37,7 +37,7 @@
 
 ;; Install formatters.
 ;; (dolist (a '((#\T fmt-todo-stats)))
-;;   (pushnew a *screen-mode-line-formatters* :test 'equal))
+;;   (pushnew a *mode-line-formatters* :test 'equal))
 
 (defvar *day-names*
   '("Mon" "Tue" "Wed"

@@ -68,7 +68,7 @@
 
 (in-package :dswm)
 
-(pushnew '(#\N notifications-as-string) *screen-mode-line-formatters* :test 'equal)
+(pushnew '(#\N notifications-as-string) *mode-line-formatters* :test 'equal)
 
 (defparameter *notifications-delimiters* '("[" "]"))
 

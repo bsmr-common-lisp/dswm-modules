@@ -42,7 +42,7 @@
 ;; Install formatters.
 (dolist (a '((#\M fmt-mem-usage)
              (#\N fmt-mem-usage-bar)))
-  (pushnew a *screen-mode-line-formatters* :test 'equal))
+  (pushnew a *mode-line-formatters* :test 'equal))
 
 ;; Defaults arguments for fmt-mem-usage-bar
 (defvar *mem-usage-bar-width* 10)

@@ -38,7 +38,7 @@
 
 ;; Install formatters.
 ;; (dolist (a '((#\T fmt-todo-stats)))
-;;   (pushnew a *mode-line-formatters* :test 'equal))
+;;   (pushnew a *screen-mode-line-formatters* :test 'equal))
 
 (defvar *todo-priorities*
   '("Low" "Normal" "High" "Urgent"))
