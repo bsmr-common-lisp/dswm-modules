@@ -109,12 +109,10 @@
 (defun dump-todos (&optional (tododump *todos-list*))
   (dump-structure tododump t *todos-file*))
 
-;; (defun fmt-todo-list (ml)
-;;   "Returns a string representing the current network activity."
-;;   (declare (ignore ml))
-;;   (let ((todos-number ___)
-;; 	(todos-expired-number ___))
-;;     ))
+(defun fmt-todos (ml)
+  "Returns a string representing the current network activity."
+  (declare (ignore ml))
+  (format nil "TODOs number: ~a" (length *todos-list*)))
 
 (defcommand todo-add (name description priority)
   ((:string "Enter todo name: ")
@@ -161,6 +159,7 @@
         (message "Loaded"))
     (message "Nothing to load")))
 
+(add-mode-line-formatter #\T #'fmt-todos)
 ;; Initialization
 (todo-reload)
 

@@ -34,11 +34,11 @@
 ;;;
 ;;; This is specific to Linux.
 
-(defpackage :dswm.contrib.net
+(defpackage :dswm.module.net
   (:use :common-lisp :dswm :cl-ppcre)
   (:export #:*net-device*))
 
-(in-package :dswm.contrib.net)
+(in-package :dswm.module.net)
 
 ;; Install formatters.
 (dolist (a '((#\l fmt-net-usage)))

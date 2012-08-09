@@ -34,10 +34,10 @@
 ;;;
 ;;; This is specific to Linux.
 
-(defpackage :dswm.contrib.mem
+(defpackage :dswm.module.mem
   (:use :common-lisp :dswm :cl-ppcre))
 
-(in-package :dswm.contrib.mem)
+(in-package :dswm.module.mem)
 
 ;; Install formatters.
 (dolist (a '((#\M fmt-mem-usage)

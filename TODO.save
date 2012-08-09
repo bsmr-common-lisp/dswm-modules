@@ -1,12 +1,36 @@
 modules autocompleting is strange...
-audio
-battery-portable
-cpu
-decorations
-disk
-dskb
-emacs
-keyboards
-keypad
-maildir
-
+modules for testing:
+-audio
+battery (no match)(?)                 | move to one module
+battery-portable + (test on notebook) |
+cpu - can't load
+-decorations
+disk +
+-dsish
+-dskb
+-eliza
+-emacs
+-keyboards
+-keypad
+maildir (?)
+mem +
+mpd 
+net - can't load
+notifications +/- (%N replaces %N from 'mem' module) notification-delete works incorrect
+productivity - TODO: remove from official modules (remove *top-map* C-t)
+pwsafe (?)
+-ql4ds
+-quicklisp
+-randr
+s-bindings +
+-screenshot
+-start-menu
+-swank
+todo + make (notifications on info-line)
+-twitter
+-wallpaper
+web + Remake web.lisp (it works incorrect)
+wifi + (test on notebook)
+window-tags - works incorrect with group without windows
+wmii-like-dswmrc +
+-xinerama
