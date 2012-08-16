@@ -90,7 +90,10 @@
   "Exit the interactive mode for changing the volume"
   (pop-top-map))
 
-(defcommand pavol-interactive () ()
+(defcommand pavol-interactive (&optional (index "0")) (:rest)
   "Change the volume interactively using `j', `k' and `m' keys"
   (push-top-map *pavol-keymap*)
   (show-volume-bar))
+
+
+;; FIXME: too old

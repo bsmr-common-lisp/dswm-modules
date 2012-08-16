@@ -34,3 +34,27 @@ wifi + (test on notebook)
 window-tags - works incorrect with group without windows
 wmii-like-dswmrc +
 -xinerama
+
+=================================
+a mpd-get-artist disk-get-available 
+A mpd-get-album
+c fmt-cpu-usage maildir-get-cur
+C fmt-cpu-usage-bar
+d disk-get-device mpd-get-date
+D disk-modeline             
+e mpd-get-elapsed
+f mpd-get-file
+F mpd-get-xfade
+g mpd-get-genre
+I fmt-wifi
+m disk-get-mount-point mpd-modeline mpd-get-song-name
+M fmt-mem-usage
+n maildir-get-new mpd-get-number
+N fmt-mem-usage-bar notifications-as-string
+p disk-get-use-percent mpd-get-playlistlength
+s disk-get-size mpd-get-shuffle
+S mpd-get-status
+t fmt-cpu-temp maildir-get-tmp mpd-get-title
+T mpd-get-track fmt-todos     
+u disk-get-used
+v mpd-get-volume
