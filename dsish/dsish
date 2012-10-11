@@ -32,7 +32,7 @@ wait_result ()
 {
     while true
     do
-	RESULT=`xprop -root -f STUMPWM_COMMAND_RESULT 8s STUMPWM_COMMAND_RESULT 2>/dev/null`
+	RESULT=`xprop -root -f DSWM_COMMAND_RESULT 8s DSWM_COMMAND_RESULT 2>/dev/null`
 
 	if echo "$RESULT" | grep -v -q 'not found.$'
 	then
@@ -42,7 +42,7 @@ wait_result ()
 	sleep $DELAY
     done
 
-    xprop -root -remove STUMPWM_COMMAND_RESULT
+    xprop -root -remove DSWM_COMMAND_RESULT
 
     if echo "$RESULT" | grep -q '= $'
     then
@@ -65,7 +65,7 @@ send_cmd ()
 	exit
     fi
 
-    xprop -root -f STUMPWM_COMMAND 8s -set STUMPWM_COMMAND "$cmd"
+    xprop -root -f DSWM_COMMAND 8s -set DSWM_COMMAND "$cmd"
 
     wait_result
 }
@@ -133,7 +133,7 @@ else
 	fi
 
 	tput setaf 5
-        echo Welcome to the STUMPwm Interactive SHell.
+        echo Welcome to the DSWM Interactive SHell.
         tput sgr0
         echo -n 'Type '
         tput setaf 2

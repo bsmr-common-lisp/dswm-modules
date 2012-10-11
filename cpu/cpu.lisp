@@ -43,7 +43,7 @@
              (#\C fmt-cpu-usage-bar)
              (#\f fmt-cpu-freq)
              (#\t fmt-cpu-temp)))
-  (pushnew a *screen-mode-line-formatters* :test 'equal))
+  (pushnew a *mode-line-formatters* :test 'equal))
 
 ;; Defaults arguments for fmt-cpu-usage-bar
 (defvar *cpu-usage-bar-width* 10)

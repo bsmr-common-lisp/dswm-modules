@@ -37,11 +37,11 @@
 ;;; Notes: This gets information through sysfs, so it only works on
 ;;; Linux with a mounted sysfs.
 
-(defpackage :dswm.contrib.wifi
+(defpackage :dswm.module.wifi
   (:use :common-lisp :dswm)
   (:export #:*iwconfig-path*
            #:*wireless-device*))
-(in-package :dswm.contrib.wifi)
+(in-package :dswm.module.wifi)
 
 (defvar *iwconfig-path*  nil
   "Location of iwconfig, if set to NIL try to guess.")
@@ -120,6 +120,6 @@ is found, just displays nil."
 
 ;;; Add mode-line formatter
 
-(add-screen-mode-line-formatter #\I #'fmt-wifi)
+(add-mode-line-formatter #\I #'fmt-wifi)
 
 ;;; EOF
