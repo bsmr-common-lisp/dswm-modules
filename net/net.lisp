@@ -34,15 +34,15 @@
 ;;;
 ;;; This is specific to Linux.
 
-(defpackage :dswm.contrib.net
+(defpackage :dswm.module.net
   (:use :common-lisp :dswm :cl-ppcre)
   (:export #:*net-device*))
 
-(in-package :dswm.contrib.net)
+(in-package :dswm.module.net)
 
 ;; Install formatters.
 (dolist (a '((#\l fmt-net-usage)))
-  (pushnew a *screen-mode-line-formatters* :test 'equal))
+  (pushnew a *mode-line-formatters* :test 'equal))
 
 (defvar *net-device* nil) ; nil means auto. or specify explicitly, i.e. "wlan0"
 (defvar *net-last-rx* 0)

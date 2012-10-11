@@ -35,16 +35,16 @@
 ;;;
 ;;; If you have an older kernel and the above doesn't work, add
 ;;;
-;;;     (setf dswm.contrib.battery-portable:*prefer-sysfs* nil)
+;;;     (setf dswm.module.battery-portable:*prefer-sysfs* nil)
 ;;;
 ;;; below the above line.
 
-(defpackage :dswm.contrib.battery-portable
+(defpackage :dswm.module.battery-portable
   (:use :common-lisp :dswm :cl-ppcre)
   (:export #:*refresh-time*
            #:*prefer-sysfs*
            ))
-(in-package :dswm.contrib.battery-portable)
+(in-package :dswm.module.battery-portable)
 
 ;;; CLISP doesn't include :linux in *features* even if it runs on
 ;;; Linux. :-/
@@ -260,7 +260,7 @@
                     (:unknown (format fmt "(no info)"))
                     (:charged (format fmt "~~ ~D%" (round perc)))
                     ((:charging :discharging)
-                     (format fmt "~/dswm.contrib.battery-portable::fmt-time/~A ^[~A~D%^]"
+                     (format fmt "~/dswm.module.battery-portable::fmt-time/~A ^[~A~D%^]"
                              time
                              (if (eq state :charging) #\+ #\-)
                              (bar-zone-color perc 90 50 20 t)
@@ -282,6 +282,6 @@
 ;;; Put this at the end to avoid evaluating it when the core above
 ;;; throws an error.
 
-(add-screen-mode-line-formatter #\B #'fmt-bat)
+(add-mode-line-formatter #\B #'fmt-bat)
 
 ;;; EOF

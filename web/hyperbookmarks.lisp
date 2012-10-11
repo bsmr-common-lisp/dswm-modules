@@ -168,19 +168,18 @@
         (setf *hyperbookmarks-list*
               (dswm::read-dump-from-file *hyperbookmarks-file*))
         (message "Loaded"))
-        (message "Nothing to load")))
+        (message "No hyperbookmarks to load")))
 
 
 ;; Initialization
 (hb-reload)
 
-(define-key *root-map*
-  (kbd "u") "hb-open")
-
-    ("M-s" "web-search")
-    ("M-w" "wiki-search")
-    ("M-d" "dict-search")
-    ("M-j" "web-jump")
-    ("M-g" "g-translate"))
+(define-keys *root-map*
+  ((kbd "u") "hb-open")
+  ((kbd "M-s") "web-search")
+  ((kbd "M-w") "wiki-search")
+  ((kbd "M-d") "dict-search")
+  ((kbd "M-j") "web-jump")
+  ((kbd "M-g") "g-translate"))
 
 ;;; hyperbookmarks.lisp ends here

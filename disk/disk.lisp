@@ -36,7 +36,7 @@
 (in-package :dswm)
 
 (dolist (a '((#\D disk-modeline)))
-  (pushnew a *screen-mode-line-formatters* :test 'equal))
+  (pushnew a *mode-line-formatters* :test 'equal))
 
 (defvar *disk-usage* nil)
 

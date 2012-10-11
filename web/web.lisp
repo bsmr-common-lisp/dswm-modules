@@ -34,7 +34,7 @@
 (defpackage :dswm.modules.web
   (:use :common-lisp :dswm :cl-ppcre))
 
-(in-package :dswm-user)
+(in-package :dswm.modules.web)
 
 ;;
 ;; Websearch

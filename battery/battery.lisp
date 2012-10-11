@@ -39,7 +39,7 @@
 (export '(*battery-name*))
 
 (dolist (a '((#\b fmt-bat-charge)))
-  (pushnew a *screen-mode-line-formatters* :test 'equal))
+  (pushnew a *mode-line-formatters* :test 'equal))
 
 (defvar *bat-state* nil)
 (defvar *bat-remain* 0)

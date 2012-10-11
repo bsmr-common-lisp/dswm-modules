@@ -39,7 +39,7 @@
 ;;; CODE:
 
 
-(defpackage :dswm.contrib.pwsafe
+(defpackage :dswm.module.pwsafe
   (:use :common-lisp :dswm))
 
 (in-package :dswm)

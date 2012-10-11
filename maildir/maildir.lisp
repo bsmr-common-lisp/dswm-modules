@@ -41,7 +41,7 @@
 (in-package :dswm)
 
 (dolist (a '((#\M maildir-modeline)))
-  (pushnew a *screen-mode-line-formatters* :test 'equal))
+  (pushnew a *mode-line-formatters* :test 'equal))
 
 (defvar *maildir-timer* nil)
 (defvar *maildir-update-time* 900

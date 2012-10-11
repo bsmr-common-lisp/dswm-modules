@@ -1,0 +1,60 @@
+modules autocompleting is strange...
+modules for testing:
+-audio
+battery (no match)(?)                 | move to one module
+battery-portable + (test on notebook) |
+cpu - can't load
+-decorations
+disk +
+-dsish
+-dskb
+-eliza
+-emacs
+-keyboards
+-keypad
+maildir (?)
+mem +
+mpd 
+net - can't load
+notifications +/- (%N replaces %N from 'mem' module) notification-delete works incorrect
+productivity - TODO: remove from official modules (remove *top-map* C-t)
+pwsafe (?)
+-ql4ds
+-quicklisp
+-randr
+s-bindings +
+-screenshot
+-start-menu
+-swank
+todo + make (notifications on info-line)
+-twitter
+-wallpaper
+web + Remake web.lisp (it works incorrect)
+wifi + (test on notebook)
+window-tags - works incorrect with group without windows
+wmii-like-dswmrc +
+-xinerama
+
+=================================
+a mpd-get-artist disk-get-available 
+A mpd-get-album
+c fmt-cpu-usage maildir-get-cur
+C fmt-cpu-usage-bar
+d disk-get-device mpd-get-date
+D disk-modeline             
+e mpd-get-elapsed
+f mpd-get-file
+F mpd-get-xfade
+g mpd-get-genre
+I fmt-wifi
+m disk-get-mount-point mpd-modeline mpd-get-song-name
+M fmt-mem-usage
+n maildir-get-new mpd-get-number
+N fmt-mem-usage-bar notifications-as-string
+p disk-get-use-percent mpd-get-playlistlength
+s disk-get-size mpd-get-shuffle
+S mpd-get-status
+t fmt-cpu-temp maildir-get-tmp mpd-get-title
+T mpd-get-track fmt-todos     
+u disk-get-used
+v mpd-get-volume
