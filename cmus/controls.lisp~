@@ -1,0 +1,20 @@
+(defmacro use-controls-p ()
+  (when (not (null *use-default-controls-p*))
+    `(progn
+       (fill-keymap *cmus-map*
+	    (kbd "C-M-i") "cmus-info"
+	    (kbd "C-M-p") "cmus-send play"
+	    (kbd "C-M-s") "cmus-send stop"
+	    (kbd "C-M->") "cmus-send next"
+	    (kbd "C-M-<") "cmus-send prev"
+	    (kbd "C-M-f") "cmus-send shuffle"
+	    (kbd "C-M-r") "cmus-send repeat"
+	    (kbd "C-M-c") "cmus-send clear"
+	    (kbd "C-M-;") "cmus-load-playlist"
+	    (kbd "C-M-w") "cmus-artist-wiki"
+	    (kbd "C-M-v") "cmus-video"
+	    (kbd "C-M-l") "cmus-lyrics")
+       
+       (define-key *root-map* (kbd "M-c") *cmus-map*))))
+
+(use-controls-p)
