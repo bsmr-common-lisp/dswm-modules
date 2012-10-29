@@ -114,6 +114,8 @@
   ;; ("s-{" "gprev")
   ;; ("s-]" "fnext")
   ;; ("s-[" "fother")
+
+  ("s-Tab" "fother")
   )
 
 
