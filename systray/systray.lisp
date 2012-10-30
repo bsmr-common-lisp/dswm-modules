@@ -11,9 +11,13 @@
 ;; (asdf:compute-source-registry)
 ;; (declaim (optimize (speed 0) (debug 3) (safety 3)))
 
+;; (require 'xembed)
+;; (require 'alexandria)
+
 (defpackage :dswm.module.systray
   (:use #:cl #:alexandria #:dswm)
-  (:export )
+  (:shadowing-import-from #:dswm #:copy-file)
+  (:shadowing-import-from #:dswm #:copy-stream))
 
 (in-package :dswm.module.systray)
 
