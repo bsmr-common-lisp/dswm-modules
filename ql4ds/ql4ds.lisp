@@ -4,8 +4,8 @@
 (in-package :dswm.module.ql4ds)
 
 (defvar *quicklisp-path* (make-pathname :directory (pathname-directory (user-homedir-pathname)) (list "quicklisp")))
+(defvar *quicklisp-proxy* nil)
 (defvar *modules-path* (make-pathname :directory (pathname-directory (user-homedir-pathname)) (list "quicklisp")))
-
 
 (defun modules-paths-list ()
   "Return a list of the real paths of available modules"
@@ -40,3 +40,34 @@
 		    (sb-posix:stat-mode
 		     (sb-posix:lstat ql-local-projects-dir)))))
 	(sb-posix:symlink path ql-local-projects-dir)))))
+
+(defun quicklisp-system-p (term)
+  "Like ql:apropos, but useful for programming"
+  (let ((print-systems nil))
+    (dolist (system (ql-dist:provided-systems t))
+      (when (or (search term (ql-dist:name system))
+		(search term (ql-dist:name (ql-dist:release system))))
+	(push system print-systems)))
+    print-systems))
+
+(defun update-repos ()
+  "Update repositories ql4ds"
+  (when (and (find-package :ql) (not (quicklisp-system-p "ql4ds")))
+    ;; update repository files
+    ))
+
+(defun install (dir)
+  "Install quicklisp into given directory"
+  (quicklisp-quickstart:install :path *quicklisp-path* :proxy *quicklisp-proxy*))
+
+
+;;;; Initial process ;;;;
+(defun init ()
+  "Initialize module"
+  (if (find-package :ql)
+      (when (not (not (quicklisp-system-p "ql4ds")))
+	(update-repos))
+    (install)))
+
+(init)
+;;;; /Initial process ;;;;
