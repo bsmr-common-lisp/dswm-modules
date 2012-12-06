@@ -1,11 +1,11 @@
 (defpackage :dswm.module.ql4ds
-  (:use :cl :dswm :sb-posix))
+  (:use :cl :dswm))
 
 (in-package :dswm.module.ql4ds)
 
-(defvar *quicklisp-path* (make-pathname :directory (pathname-directory (user-homedir-pathname)) (list "quicklisp")))
+(defvar *quicklisp-path* (make-pathname :directory (append (pathname-directory (user-homedir-pathname)) (list "quicklisp"))))
 (defvar *quicklisp-proxy* nil)
-(defvar *modules-path* (make-pathname :directory (pathname-directory (user-homedir-pathname)) (list "quicklisp")))
+(defvar *modules-path* (make-pathname :directory (append (pathname-directory (user-homedir-pathname)) (list "quicklisp"))))
 
 (defun modules-paths-list ()
   "Return a list of the real paths of available modules"
