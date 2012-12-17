@@ -34,6 +34,7 @@ wifi + (test on notebook)
 window-tags - works incorrect with group without windows
 wmii-like-dswmrc +
 -xinerama
+fix hyperbookmarks (uses old functions)
 
 =================================
 a mpd-get-artist disk-get-available 
