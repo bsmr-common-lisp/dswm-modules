@@ -16,11 +16,9 @@
 			     (pathname-directory (user-homedir-pathname))
 			     (list "quicklisp"))))
 
-(in-package :dswm.module.ql4ds)
-
 (defun ql4ds-install ()
   "Install quicklisp into given directory"
-  (quicklisp-quickstart:install :path dswm-user:*quicklisp-path* :proxy dswm-user:*quicklisp-proxy*))
+  (quicklisp-quickstart:install :path *quicklisp-path* :proxy *quicklisp-proxy*))
 
 
 ;;;; Initial process ;;;;
