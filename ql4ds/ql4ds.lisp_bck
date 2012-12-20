@@ -1,0 +1,8 @@
+(in-package :dswm.module.ql4ds)
+
+;;;; Initial process ;;;;
+(if (find-package :ql)
+    (when (not (not (quicklisp-system-p "ql4ds")))
+      (update-repos))
+    (ql4ds-install))
+;;;; /Initial process ;;;;

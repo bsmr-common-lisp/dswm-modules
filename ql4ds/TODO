@@ -1,0 +1,16 @@
+Commands:
+- ql-load-module - command
+- ql-reload-module - command
+- ql-remove-module - command
+- ql-update - command
+- ql-upgrade - command
+- ql-fetch-module - function
+- ql-refetch-module - function
+
+possibilities:
+fetch and update repository metainformation
+fetch and update modules and libraries
+different actions for modules and libraries
+use modules list (list of all possible modules with it's descriptions
+Logic:
+if module already loaded, use it's own information

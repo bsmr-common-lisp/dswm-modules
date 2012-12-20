@@ -1,0 +1,32 @@
+(in-package :cl-user)
+(in-package :dswm.module.ql4ds)
+
+(export '(*quicklisp-path*
+	  *quicklisp-proxy*
+	  *modules-path*))
+
+(defvar *quicklisp-path*
+  (make-pathname :directory (append
+			     (pathname-directory (user-homedir-pathname))
+			     (list "quicklisp"))))
+
+(defvar *quicklisp-proxy* nil)
+
+(defvar *modules-path*
+  (make-pathname :directory (append
+			     (pathname-directory (user-homedir-pathname))
+			     (list "quicklisp"))))
+
+(defun install ()
+  "Install quicklisp into given directory"
+  (quicklisp-quickstart:install :path *quicklisp-path* :proxy *quicklisp-proxy*))
+
+
+;;;; Initial process ;;;;
+(defun try-to-install ()
+  "Initialize module"
+  (when (not (find-package :ql))
+	     (install)))
+
+(try-to-install)
+;;;; /Initial process ;;;;
