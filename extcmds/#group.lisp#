@@ -1,0 +1,47 @@
+;;; Copyright 2013 Alexander aka 'CosmonauT' Vynnyk
+;;;
+;;; Maintainer: Alexander aka 'CosmonauT' Vynnyk
+;;;
+;;; This module is free software; you can redistribute it and/or modify
+;;; it under the terms of the GNU General Public License as published by
+;;; the Free Software Foundation; either version 2, or (at your option)
+;;; any later version.
+;;;
+;;; This module is distributed in the hope that it will be useful,
+;;; but WITHOUT ANY WARRANTY; without even the implied warranty of
+;;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+;;; GNU General Public License for more details.
+;;;
+;;; You should have received a copy of the GNU General Public License
+;;; along with this software; see the file COPYING.  If not, write to
+;;; the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
+;;; Boston, MA 02111-1307 USA
+;;;
+
+(in-package :dswm.module.extcmds)
+
+(defcommand gconvert () ()
+  "NEW: Convert current group from tiling to float and back"
+  (convert-group (current-group)))
+
+(defcommand gnew-with-marked (name) ((:string "Input group name: "))
+  "Move marked window to new group"
+  (let ((group (gnewbg name)))
+    (gmove-marked group)
+    (gselect group)))
+
+(defcommand grun (command group) ((:shell "Enter command to run program: ")
+				  (:group "In what group? "))
+  "Run shell command in specified group"
+  ;; FIXME: need to run, ignoring window placement rules
+  (gselect group)
+  (run-shell-command command))
+
+(defcommand grun-new (command) ((:shell "Enter command to run program: "))
+  "Run shell command in new tile group with same name with command"
+  ;; FIXME: need to run, ignoring window placement rules
+  (if (find-group (current-screen) command)
+      (message "Group ~a already exists" command)
+    (progn
+      (add-group (current-screen) command)
+      (run-shell-command command))))
