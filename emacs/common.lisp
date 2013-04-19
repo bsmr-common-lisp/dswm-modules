@@ -1,6 +1,6 @@
 
-(defvar *emacs-command* "emacs")
-(defvar *emacs-client-command* "emacsclient")
+(defvar *emacs-cmd* "emacs")
+(defvar *ec-cmd* "emacsclient")
 
 (defvar *emacs-server-instances* '("default"))
 
@@ -11,36 +11,47 @@
 
 (defvar *emacs-shortcut-hash* (make-hash-table))
 
+;;;; Common functions
+(defun make-emacs-call (&rest rest)
+  "Make emacs call"
+  (eval (append (list 'concat *ec-cmd* " -e '") rest '("'"))))
+
+(defun make-emacs-call-in-new-frame (&rest rest)
+  "Make emacs call to run it in new `emacs frame`"
+  (eval (append (list 'concat *ec-cmd* " -c -e '") rest '("'"))))
+
 (defun e-call (&rest body)
   "Call from emacsclient to emacs daemon to run some command"
   (run-shell-command
-   (eval (append
-	  (list 'concat *emacs-client-command* " " "-e" " '")
-	  body '("'"))) t)))
+   (eval (cons 'make-emacs-call body)) t))
 
 (defun e-buffers ()
-  (cl-ppcre:split
-   ":" (cl-ppcre:regex-replace-all
-	"\\(\\:|\\:\\)" (cl-ppcre:regex-replace-all
-			 "\"+\ \"+|\"+"
-			 (e-call "(mapcar (function buffer-name) (buffer-list))")
-			 ":") "")))
+  (cl-ppcre:split 
+   "\"+\ \"+|\"+"
+   (cl-ppcre:regex-replace-all
+    "\\(\"|\"\\)" 
+    (e-call "(mapcar (function buffer-name) (buffer-list))") "")))
+;;;; /Common functions
 
-(defun e-switch-to-buffer ()
+;;; DSWM types
+(define-dswm-type :emacs-buffer (input prompt)
+  (let ((*current-input-history-slot* :emacs-buffer))
+    (or (argument-pop-rest input)
+	(completing-read (current-screen) prompt (e-buffers) :require-match nil))))
+
+(define-dswm-type :emacs-existent-buffer (input prompt)
+  (let ((*current-input-history-slot* :emacs-buffer))
+    (or (argument-pop-rest input)
+	(completing-read (current-screen) prompt (e-buffers) :require-match t))))
+;;; /DSWM types
+
+(defun switch-current-buffer-from-menu ()
   (let ((z (select-from-menu (current-screen) (e-buffers))))
-    (run-shell-command (concat "emacsclient -c -e '(switch-to-buffer \"" z "\")'"))))
+    (run-shell-command
+     (make-emacs-call
+	 (concat "(switch-to-buffer \"" z "\")")))))
 
-(defun e-switch-to-buffer-e ()
+(defun open-buffer-from-menu ()
   (let ((z (select-from-menu (current-screen) (e-buffers))))
-    (run-shell-command (concat "emacsclient -e '(switch-to-buffer \"" z "\")'"))))
+    (run-shell-command (make-emacs-call-in-new-frame "(switch-to-buffer \"" z "\")"))))
 
-
-;; (defun e-call-open-client (&rest body)
-;; FIXME: freezing
-;;   "Call from emacsclient to emacs daemon to run some command"
-;;   (run-shell-command
-;;    (eval (append
-;; 	  (list 'concat *emacs-client-command* " " "-c" " " "-e" " '")
-;; 	  body '("'"))) t)))
-
-;;; client
