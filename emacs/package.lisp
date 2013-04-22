@@ -1,5 +1,5 @@
 ;;; -*- Mode: LISP; Syntax: Common-lisp; Package: dswm.modules.emacs -*-
-
+;;
 ;; Copyright 2011 Alexander aka 'CosmonauT' Vynnyk
 ;;
 ;; Author: Alexander aka CosmonauT Vynnyk <cosmonaut.ok@gmail.com>
