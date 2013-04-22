@@ -43,7 +43,8 @@
   (kbd "k") "e-kill-buffer"
   (kbd "C-k") "e-kill-buffer-from-menu"
   (kbd ":") "e-eval"
-  (kbd "C-e") "e-start-client")
+  (kbd "C-e") "e-start-client"
+  (kbd "s") "e-save-modified-buffers")
 
 (define-key *root-map* *emacs-key*  *emacs-map*)
 (define-key *root-map* *another-emacs-key* *emacs-map*)

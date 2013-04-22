@@ -76,3 +76,8 @@
 
 (defcommand e-start-client () ()
    (run-shell-command (concat *ec-cmd* " -c")))
+
+(defcommand e-save-modified-buffers () ()
+  (run-shell-command
+        (make-emacs-call "(save-some-buffers t)")))
+
