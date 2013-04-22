@@ -33,20 +33,25 @@
 (in-package #:dswm)
 
 (defcommand e-switch-to-buffer (buffer) ((:emacs-buffer "Input emacs buffer name: "))
-  (run-shell-command
-   (make-emacs-call-in-new-frame "(switch-to-buffer \"" buffer "\")")))
+  (let ((cw (current-window)))
+    (if (equal (window-class cw) "Emacs")
+	(run-shell-command
+	 (make-emacs-call-in-new-frame "(switch-to-buffer \"" buffer "\")"))
+	(run-shell-command
+	 (make-emacs-call "(switch-to-buffer \"" buffer "\")")))))
 
 (defcommand e-list-buffres () ()
-	    (open-buffer-from-menu))
+  (let ((cw (current-window)))
+    (if (equal (window-class cw) "Emacs")
+	(open-buffer-from-menu)
+	(switch-current-buffer-from-menu))))
 
 (defcommand e-set-current-buffer () ()
-	    (switch-to-buffer-from-menu))
+  (switch-current-buffer-from-menu))
 
-(defcommand e-kill-buffer
-    (buffer)
-    ((:emacs-existent-buffer "Input emacs buffer name to kill:"))
-       (run-shell-command
-	(make-emacs-call "(kill-buffer \"" buffer "\")")))
+(defcommand e-kill-buffer (buffer) ((:emacs-existent-buffer "Input emacs buffer name to kill: "))
+  (run-shell-command
+   (make-emacs-call "(kill-buffer \"" buffer "\")")))
 
 (defcommand e-kill-buffer-from-menu () ()
   (let ((z (select-from-menu (current-screen) (e-buffers))))
@@ -79,5 +84,4 @@
 
 (defcommand e-save-modified-buffers () ()
   (run-shell-command
-        (make-emacs-call "(save-some-buffers t)")))
-
+   (make-emacs-call "(save-some-buffers t)")))
