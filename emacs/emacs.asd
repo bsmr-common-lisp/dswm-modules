@@ -13,5 +13,7 @@
   :serial t
   :components ((:file "package")
 	       (:file "common")
-	       (:file "emacsclient")
-	       (:file "emacs")))
+	       (:file "server")
+	       (:file "client")
+	       ;; (:file "keymap")
+	       (:file "bindings")))

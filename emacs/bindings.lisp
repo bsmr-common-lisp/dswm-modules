@@ -27,38 +27,22 @@
 
 (export '(*emacs-map*))
 
-;; (defvar *emacs-key* "e")
+(defvar *emacs-key* (kbd "e"))
+(defvar *another-emacs-key* (kbd "C-e"))
 
 (defvar *emacs-map* nil
-  "The keymap that group related key bindings sit on. It is bound to @kbd{C-j g} by default.")
-
-
-
-
-
-
-
-
-(defmacro defkey-root (key cmd)
-  `(define-key *root-map* (kbd ,key) ,cmd))
-
-(defmacro defkeys-root (&rest keys)
-  (let ((ks (mapcar #'(lambda (k) (cons 'defkey-root k)) keys)))
-    `(progn ,@ks)))
-
-(defkeys-root
-    ("e"  *emacs-map*)
-    ("C-e" *emacs-map*))
-
+  "The keymap that group related key bindings sit on. It is bound to @kbd{C-j e} by default.")
 
 (fill-keymap *emacs-map*
   (kbd "e") "send-escape"
-  (kbd "b") "e-open-buffer"
-  (kbd "C-b") "e-switch-to-buffer"
-  (kbd "f") "e-open-file"
-  (kbd "k") "e-fill-current"
-  (kbd "C-k") "e-kill-buffer"
-  (kbd "x") "e-colon"
+  (kbd "b") "e-switch-to-buffer"
+  (kbd "C-b") "e-list-buffres"
+  (kbd "f") "e-find-file"
+  (kbd "k") "e-kill-buffer"
+  (kbd "C-k") "e-kill-buffer-from-menu"
+  ;; (kbd "x") "e-colon"
   (kbd ":") "e-eval"
-  (kbd "C-e" "e-start-client"))
+  (kbd "C-e") "e-start-client")
 
+(define-key *root-map* *emacs-key*  *emacs-map*)
+(define-key *root-map* *another-emacs-key* *emacs-map*)

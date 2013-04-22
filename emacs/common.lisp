@@ -1,15 +1,49 @@
+;;; -*- Mode: LISP; Syntax: Common-lisp; Package: dswm.modules.emacs -*-
+
+;; Copyright 2011 Alexander aka 'CosmonauT' Vynnyk
+;;
+;; Author: Alexander aka CosmonauT Vynnyk <cosmonaut.ok@gmail.com>
+;; Version: id: web,v 0.1 22 Apr 2013 cosmonaut.ok@gmail.com
+;; Keywords:
+;; X-URL: not distributed yet
+
+;; This program is free software; you can redistribute it and/or modify
+;; it under the terms of the GNU General Public License as published by
+;; the Free Software Foundation; either version 2, or (at your option)
+;; any later version.
+;;
+;; This program is distributed in the hope that it will be useful,
+;; but WITHOUT ANY WARRANTY; without even the implied warranty of
+;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+;; GNU General Public License for more details.
+;;
+;; You should have received a copy of the GNU General Public License
+;; along with this program; if not, write to the Free Software
+;; Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+
+;;; Commentary:
+
+;;;==================================================================
+;;; Filename: package.lisp
+;;; Eamcs integration extension for dswm
+;;;==================================================================
+;;;
+;;; Code:
+;; (in-package :dswm.modules.emacs)
+(in-package :dswm)
 
 (defvar *emacs-cmd* "emacs")
 (defvar *ec-cmd* "emacsclient")
 
-(defvar *emacs-server-instances* '("default"))
+
+(defvar *server-instances* '("default"))
 
 ;; emacs server start-stop
-(defvar *emacs-start-server* "emacs --daemon")
-(defvar *emacs-stop-server* "emacsclient -e '(kill-emacs)'")
-(defvar *emacs-save-stop-server* "emacsclient -e '(client-save-kill-emacs)'")
+(defvar *start-server* "emacs --daemon")
+(defvar *stop-server* "emacsclient -e '(kill-emacs)'")
+(defvar *save-stop-server* "emacsclient -e '(client-save-kill-emacs)'")
 
-(defvar *emacs-shortcut-hash* (make-hash-table))
+(defvar *shortcut-hash* (make-hash-table))
 
 ;;;; Common functions
 (defun make-emacs-call (&rest rest)
@@ -55,3 +89,4 @@
   (let ((z (select-from-menu (current-screen) (e-buffers))))
     (run-shell-command (make-emacs-call-in-new-frame "(switch-to-buffer \"" z "\")"))))
 
+;;; common.lisp ends here
