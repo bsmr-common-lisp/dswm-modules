@@ -34,17 +34,19 @@
 
 (defcommand e-switch-to-buffer (buffer) ((:emacs-buffer "Input emacs buffer name: "))
   (let ((cw (current-window)))
-    (if (equal (window-class cw) "Emacs")
+    (if (and (not (null cw))
+	     (equal (window-class cw) "Emacs"))
 	(run-shell-command
-	 (make-emacs-call-in-new-frame "(switch-to-buffer \"" buffer "\")"))
+	 (make-emacs-call "(switch-to-buffer \"" buffer "\")"))
 	(run-shell-command
-	 (make-emacs-call "(switch-to-buffer \"" buffer "\")")))))
+	 (make-emacs-call-in-new-frame "(switch-to-buffer \"" buffer "\")")))))
 
 (defcommand e-list-buffres () ()
   (let ((cw (current-window)))
-    (if (equal (window-class cw) "Emacs")
-	(open-buffer-from-menu)
-	(switch-current-buffer-from-menu))))
+    (if (and (not (null cw))
+	     (equal (window-class cw) "Emacs"))
+	(switch-current-buffer-from-menu)
+	(open-buffer-from-menu))))
 
 (defcommand e-set-current-buffer () ()
   (switch-current-buffer-from-menu))
