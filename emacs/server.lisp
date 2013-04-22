@@ -95,5 +95,5 @@
       (message "Emacs server stopped")
     (error "Cannot stop server")))
 
-(defcommand e-restartserver () ()
+(defcommand e-restart-server () ()
   (restart-server))

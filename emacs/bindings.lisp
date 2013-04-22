@@ -1,3 +1,5 @@
+;;; -*- Mode: LISP; Syntax: Common-lisp; Package: dswm.modules.emacs -*-
+;;
 ;; Copyright (C) 2003-2008 Shawn Betts
 ;; Copyright (C) 2010-2012 Alexender aka CosmonauT Vynnyk
 ;;
@@ -40,7 +42,6 @@
   (kbd "f") "e-find-file"
   (kbd "k") "e-kill-buffer"
   (kbd "C-k") "e-kill-buffer-from-menu"
-  ;; (kbd "x") "e-colon"
   (kbd ":") "e-eval"
   (kbd "C-e") "e-start-client")
 
